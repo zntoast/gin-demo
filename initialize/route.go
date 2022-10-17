@@ -15,7 +15,7 @@ func InitializeRoute() {
 	publicGroup := r.Group("")
 	publicGroup.Use()
 	{
-		userRouter.InitUserRouter(publicGroup)
+		userRouter.UserRouterGroup(publicGroup)
 	}
 
 	//需要登录
