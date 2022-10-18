@@ -1,7 +1,12 @@
 package global
 
-import "gindemo/config"
+import (
+	"gindemo/config"
+
+	"gorm.io/gorm"
+)
 
 var (
 	GVA_SERVER config.Server
+	GVA_DB     *gorm.DB
 )

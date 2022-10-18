@@ -17,7 +17,7 @@ type SystemUserApi struct{}
 
 // 图像验证码
 func (s *SystemUserApi) GenerateCaptcha(c *gin.Context) {
-	driver := base64Captcha.NewDriverDigit(80, 240, 6, 0.7, 80)
+	driver := base64Captcha.NewDriverDigit(80, 240, 6, 0.9, 80)
 	cp := base64Captcha.NewCaptcha(driver, store)
 	if id, b64s, err := cp.Generate(); err != nil {
 		response.FailWithMessage("获取验证码失败", c)

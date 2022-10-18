@@ -1,5 +1,16 @@
 
+system:
+ addr: 8000
+
 captcha:
- img-height: 80
- img-width:  240
- long : 7
+ img-height: 80  #图像验证码高度
+ img-width:  240 #图像验证码宽度
+ long : 7       #验证码长度
+
+mysql:
+ dbName: 'dbName'
+ ip   : 'ip'
+ port :   'port'
+ userName : 'username'
+ password : 'password'
+ config : '&parseTime=true&charset=utf8mb4&loc=Local'

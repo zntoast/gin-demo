@@ -1,6 +1,8 @@
 package initialize
 
 import (
+	"fmt"
+	"gindemo/global"
 	"gindemo/middleware"
 	"gindemo/router"
 
@@ -28,5 +30,6 @@ func InitializeRoute() {
 
 	//管理员
 
-	r.Run(":8000")
+	addr := fmt.Sprintf(":%s", global.GVA_SERVER.System.Addr)
+	r.Run(addr)
 }
