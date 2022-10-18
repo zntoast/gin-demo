@@ -6,6 +6,7 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
+// 传参校验
 func GetValidMsg(err error, obj interface{}) string {
 	getObj := reflect.TypeOf(obj)
 	if errs, ok := err.(validator.ValidationErrors); ok {

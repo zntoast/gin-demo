@@ -1,4 +1,4 @@
-package api
+package system
 
 import (
 	"gindemo/utils"
@@ -17,11 +17,6 @@ type SystemUserApi struct{}
 
 // 图像验证码
 func (s *SystemUserApi) GenerateCaptcha(c *gin.Context) {
-	req := &request.LoginRequest{}
-	if err := c.ShouldBind(req); err != nil {
-		response.FailWithMessage(utils.GetValidMsg(err, req), c)
-		return
-	}
 	driver := base64Captcha.NewDriverDigit(80, 240, 6, 0.7, 80)
 	cp := base64Captcha.NewCaptcha(driver, store)
 	if id, b64s, err := cp.Generate(); err != nil {
@@ -50,7 +45,8 @@ func (s *SystemUserApi) SMSCode(c *gin.Context) {
 		return
 	}
 	/* 业务实现 */
-	response.Ok(c)
+	// 实现阿里的短信服务
+	response.OkWithDetailed(nil, "发送成功", c)
 }
 
 // 用户登录
@@ -60,7 +56,19 @@ func (s *SystemUserApi) UserLogin(c *gin.Context) {
 		response.FailWithMessage(utils.GetValidMsg(err, req), c)
 		return
 	}
+	//图像验证码
+	if !store.Verify(req.CaptchaId, req.Captcha, true) {
+		response.FailWithMessage("登录失败验证码错误", c)
+		return
+	}
+	//验证手机号和密码
+	if err := userService.Login(req.PhoneNumber, req.Password); err != nil {
+		response.FailWithMessage("登录失败"+err.Error(), c)
+		return
+	}
 	response.OkWithMessage("登录成功", c)
+	//生成token
+
 }
 
 // 用户注册

@@ -12,10 +12,11 @@ func InitializeRoute() {
 	r := gin.Default()
 	userRouter := router.RouterGroupApp.UserRouter
 
+	//开放接口
 	publicGroup := r.Group("")
 	publicGroup.Use()
 	{
-		userRouter.UserRouterGroup(publicGroup)
+		userRouter.InitUserRouter(publicGroup) // 系统用户
 	}
 
 	//需要登录
@@ -24,6 +25,8 @@ func InitializeRoute() {
 	{
 
 	}
+
+	//管理员
 
 	r.Run(":8000")
 }
