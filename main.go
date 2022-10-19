@@ -1,8 +1,8 @@
 package main
 
 import (
+	"gindemo/global"
 	"gindemo/initialize"
-	"gindemo/utils"
 )
 
 func main() {
@@ -10,12 +10,18 @@ func main() {
 }
 
 func Run() {
-	utils.Print("打印白色", utils.Blank)
-	// fmt.Printf("utils.White: %v\n", utils.White)
 	//加载文件配置
 	initialize.InitConfigFile("config1.yaml")
+	//初始化日志文件
+	global.GVA_LOG = initialize.InitializeZap()
 	//初始化gorm
-	initialize.InitGormMysql()
+	global.GVA_DB = initialize.InitGormMysql()
+	if global.GVA_DB == nil {
+		global.GVA_LOG.Warn("mysql未初始化 .............")
+	} else {
+		//关联数据库表(数据库中不存在则创建)
+		initialize.RegisterTables(global.GVA_DB)
+	}
 	//初始化路由
 	initialize.InitializeRoute()
 }

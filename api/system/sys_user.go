@@ -1,6 +1,7 @@
 package system
 
 import (
+	"fmt"
 	"gindemo/utils"
 	"gindemo/vo/request"
 	"gindemo/vo/response"
@@ -56,19 +57,25 @@ func (s *SystemUserApi) UserLogin(c *gin.Context) {
 		response.FailWithMessage(utils.GetValidMsg(err, req), c)
 		return
 	}
-	//图像验证码
+	//判断手机号是否合法
+	if err := utils.VerifyPhoneNumber(req.PhoneNumber); err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	//图像码验证
 	if !store.Verify(req.CaptchaId, req.Captcha, true) {
-		response.FailWithMessage("登录失败验证码错误", c)
+		response.FailWithMessage("验证码错误", c)
 		return
 	}
 	//验证手机号和密码
-	if err := userService.Login(req.PhoneNumber, req.Password); err != nil {
-		response.FailWithMessage("登录失败"+err.Error(), c)
+	if user, err := userService.Login(req.PhoneNumber, req.Password); err != nil {
+		response.FailWithMessage(err.Error(), c)
 		return
+	} else {
+		fmt.Printf("user: %v\n", user)
+		response.OkWithMessage("登录成功", c)
+		//生成token
 	}
-	response.OkWithMessage("登录成功", c)
-	//生成token
-
 }
 
 // 用户注册

@@ -30,6 +30,8 @@ func InitializeRoute() {
 
 	//管理员
 
+	// 监听
 	addr := fmt.Sprintf(":%s", global.GVA_SERVER.System.Addr)
 	r.Run(addr)
+	global.GVA_LOG.Info("路由启动成功..........")
 }

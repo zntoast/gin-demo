@@ -1,7 +1,6 @@
 package initialize
 
 import (
-	"fmt"
 	"gindemo/global"
 	"gindemo/model/system"
 
@@ -11,11 +10,10 @@ import (
 )
 
 // 初始化gorm
-func InitGormMysql() {
+func InitGormMysql() *gorm.DB {
 	m := global.GVA_SERVER.Mysql
-	fmt.Printf("m.Dsn(): %v\n", m.Dsn())
 	if m.DbName == "" {
-		return
+		return nil
 	}
 	//mysql配置
 	mysqlconfig := mysql.Config{
@@ -29,17 +27,17 @@ func InitGormMysql() {
 		Logger:                                   logger.Default.LogMode(logger.Info),
 	}
 	if gormDb, err := gorm.Open(mysql.New(mysqlconfig), gormConfig); err != nil {
-		fmt.Printf("\x1b[%d 加载gorm错误err:%v \x1b[0m\n", 31, err)
-		return
+		global.GVA_LOG.Warn("加载gorm错误err:" + err.Error())
+		return nil
 	} else {
-		global.GVA_DB = gormDb
-		RegisterTables()
+		global.GVA_LOG.Info("初始化gorm成功............")
+		return gormDb
 	}
 }
 
-// 初始化表
-func RegisterTables() {
-	global.GVA_DB.AutoMigrate(
+func RegisterTables(goreDb *gorm.DB) {
+	goreDb.AutoMigrate(
 		system.User{},
+		system.LoginRecord{},
 	)
 }

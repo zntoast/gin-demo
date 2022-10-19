@@ -1,7 +1,9 @@
 package utils
 
 import (
+	"fmt"
 	"reflect"
+	"regexp"
 
 	"github.com/go-playground/validator/v10"
 )
@@ -17,4 +19,13 @@ func GetValidMsg(err error, obj interface{}) string {
 		}
 	}
 	return err.Error()
+}
+
+// 判断是否为手机号
+func VerifyPhoneNumber(phone string) error {
+	res := regexp.MustCompile(`1[3456789]\d{9}`).FindAllStringSubmatch(phone, -1)
+	if len(res) == 0 {
+		return fmt.Errorf("手机号不合法")
+	}
+	return nil
 }

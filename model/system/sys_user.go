@@ -1,6 +1,8 @@
 package system
 
 import (
+	"time"
+
 	"github.com/gofrs/uuid"
 	"gorm.io/gorm"
 )
@@ -12,4 +14,12 @@ type User struct {
 	Phone    string
 	Password string
 	Addr     string
+}
+
+type LoginRecord struct {
+	ID        uint `gorm:"primarykey"`
+	Uid       uint
+	UserName  string
+	LoginTime time.Time
+	IP        string
 }

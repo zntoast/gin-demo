@@ -1,6 +1,8 @@
 
 system:
- addr: 8000
+ addr: 8000   # 服务端口
+ model: test   # test(会在控制台打印输出且输出日志) 、formal(仅在日志中输出)   
+ logdir : log  # 日志文件目录
 
 captcha:
  img-height: 80  #图像验证码高度
@@ -8,9 +10,9 @@ captcha:
  long : 7       #验证码长度
 
 mysql:
- dbName: 'dbName'
- ip   : 'ip'
- port :   'port'
- userName : 'username'
- password : 'password'
+ dbName: '' 
+ ip   : ''
+ port :   ''
+ userName : ''
+ password : ''
  config : '&parseTime=true&charset=utf8mb4&loc=Local'

@@ -14,7 +14,7 @@ func InitConfigFile(path string) {
 	v := viper.New()
 	v.SetConfigFile(path)
 	if err := v.ReadInConfig(); err != nil {
-		panic("load config file fail")
+		panic("加载配置文件失败")
 	}
 	if err := v.Unmarshal(&global.GVA_SERVER); err != nil {
 		panic("文件解析失败")
