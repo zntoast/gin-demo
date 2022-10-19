@@ -10,11 +10,14 @@ type LoginRequest struct {
 
 //注册请求
 type RegisterRequest struct {
-	Username        string `json:"username" binding:"required" msg:"请输入用户名"`
+	// Username        string `json:"username" binding:"required" msg:"请输入用户名"`
+	PhoneNumber     string `json:"phoneNumber" binding:"required" msg:"请输入手机号"`
 	Password        string `json:"password" binding:"min=3,max=6" msg:"密码长度不能小于3大于6"`
 	ConfirmPassword string `json:"nextPassword" binding:"required" msg:"请输入密码"`
-	Email           string `json:"email" binding:"email" msg:"邮箱地址格式不正确"`
-	Code            int    `json:"code" binding:"required" msg:"请输入短信验证码"`
+	// Email           string `json:"email" binding:"email" msg:"邮箱地址格式不正确"`
+	// Code            int    `json:"code" binding:"required" msg:"请输入短信验证码"`
+	CaptchaId string `json:"captchaId" binding:""`
+	Captcha   string `json:"captcha" binding:"required" msg:"请输入验证码"`
 }
 
 //获取图像验证码请求

@@ -3,7 +3,7 @@ package system
 import (
 	"time"
 
-	"github.com/gofrs/uuid"
+	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
 )
 
@@ -14,6 +14,10 @@ type User struct {
 	Phone    string
 	Password string
 	Addr     string
+}
+
+func (u User) TableName() string {
+	return "users"
 }
 
 type LoginRecord struct {

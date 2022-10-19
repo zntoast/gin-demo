@@ -2,6 +2,8 @@ package system
 
 import (
 	"fmt"
+	"gindemo/global"
+	"gindemo/model/system"
 	"gindemo/utils"
 	"gindemo/vo/request"
 	"gindemo/vo/response"
@@ -51,7 +53,7 @@ func (s *SystemUserApi) SMSCode(c *gin.Context) {
 }
 
 // 用户登录
-func (s *SystemUserApi) UserLogin(c *gin.Context) {
+func (s SystemUserApi) UserLogin(c *gin.Context) {
 	req := &request.LoginRequest{}
 	if err := c.ShouldBind(req); err != nil {
 		response.FailWithMessage(utils.GetValidMsg(err, req), c)
@@ -79,15 +81,34 @@ func (s *SystemUserApi) UserLogin(c *gin.Context) {
 }
 
 // 用户注册
-func (s *SystemUserApi) UserRegister(c *gin.Context) {
+func (s SystemUserApi) UserRegister(c *gin.Context) {
 	req := &request.RegisterRequest{}
 	if err := c.ShouldBind(req); err != nil {
 		response.FailWithMessage(utils.GetValidMsg(err, req), c)
 		return
 	}
+	//判断手机号是否合法
+	if err := utils.VerifyPhoneNumber(req.PhoneNumber); err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	//图像码验证
+	if !store.Verify(req.CaptchaId, req.Captcha, true) {
+		response.FailWithMessage("验证码错误", c)
+		return
+	}
 	if req.Password != req.ConfirmPassword {
-		response.FailWithMessage("两次输入密码不一致", c)
+		response.FailWithMessage("两次密码输入不一致", c)
+		return
+	}
+	user := &system.User{
+		Phone:    req.PhoneNumber,
+		Password: req.Password,
+	}
+	if err := userService.Register(user); err != nil {
+		response.FailWithMessage(err.Error(), c)
 		return
 	}
 	response.OkWithMessage("注册成功", c)
+	global.GVA_LOG.Info(fmt.Sprintf("手机号:%s 注册成功\n", req.PhoneNumber))
 }
