@@ -6,6 +6,7 @@ import (
 )
 
 func main() {
+	// fmt.Printf("time.Now(): %v\n", time.Now())
 	Run()
 }
 
@@ -14,6 +15,8 @@ func Run() {
 	initialize.InitConfigFile("config1.yaml")
 	//初始化日志文件
 	global.GVA_LOG = initialize.InitializeZap()
+	//初始化redis
+	global.GVA_REDIS = initialize.InitializeRedis()
 	//初始化gorm
 	global.GVA_DB = initialize.InitGormMysql()
 	if global.GVA_DB == nil {

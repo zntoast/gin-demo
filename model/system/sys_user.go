@@ -21,9 +21,10 @@ func (u User) TableName() string {
 }
 
 type LoginRecord struct {
-	ID        uint `gorm:"primarykey"`
-	Uid       uint
-	UserName  string
+	ID  uint `gorm:"primarykey"`
+	Uid uuid.UUID
+	// UserName  string
+	Phone     string
 	LoginTime time.Time
 	IP        string
 }

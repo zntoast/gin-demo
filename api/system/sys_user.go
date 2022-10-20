@@ -13,7 +13,8 @@ import (
 )
 
 var (
-	store = base64Captcha.DefaultMemStore
+	// store = base64Captcha.DefaultMemStore # 本地内存
+	store = utils.RedisStoreDefault // redis
 )
 
 type SystemUserApi struct{}
@@ -69,8 +70,9 @@ func (s SystemUserApi) UserLogin(c *gin.Context) {
 		response.FailWithMessage("验证码错误", c)
 		return
 	}
+	ip := c.GetHeader("")
 	//验证手机号和密码
-	if user, err := userService.Login(req.PhoneNumber, req.Password); err != nil {
+	if user, err := userService.Login(req.PhoneNumber, req.Password, ip); err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
 	} else {

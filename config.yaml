@@ -1,8 +1,8 @@
 
 system:
  addr: 8000   # 服务端口
- model: test   # test(会在控制台打印输出且输出日志) 、formal(仅在日志中输出)   
- logdir : log  # 日志文件目录
+ model: test   # test(会在控制台打印输出且输出日志) 、formal(仅在日志中输出)   defalt test
+ logdir : log  # 日志输出目录
 
 captcha:
  img-height: 80  #图像验证码高度
@@ -16,3 +16,10 @@ mysql:
  userName : ''
  password : ''
  config : '&parseTime=true&charset=utf8mb4&loc=Local'
+
+
+# 切记不能使用缩进符tap
+redis:
+ addr: ''
+ password: ''
+ db: 0
